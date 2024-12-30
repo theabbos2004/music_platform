@@ -5,7 +5,7 @@ import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { useMainContext } from "../../contexts/MainContext";
 import { useCreateSaveMusic, usegetCurrentUserQuery, useSaveMusic, useUpdateUser } from "../../lib/react-query/queris";
-import { CheckCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { IUser } from "../../types";
 import { useUserContext } from "../../contexts/AuthContext/AuthContext";
 
@@ -15,8 +15,6 @@ export default function Liked() {
   const { checkAuthUser} = useUserContext()
   const { data: currentUser } = usegetCurrentUserQuery()
   const { mutateAsync: updateUser } = useUpdateUser()
-  const { mutateAsync: createSaveMusic } = useCreateSaveMusic()
-  const { mutateAsync: saveMusic } = useSaveMusic()
   const [user, setUser] = useState<IUser>()
   const { isPlaying, activeSong, currentIndex } = useSelector((state: RootState) => state?.player);
   useEffect(() => {

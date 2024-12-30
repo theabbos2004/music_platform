@@ -3,7 +3,7 @@ import { ICreateAlbum } from '../../types';
 import { useMainContext } from '../../contexts/MainContext';
 import { CheckCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { useCreateAlbum, usegetCurrentAccountQuery, usegetCurrentUserQuery } from '../../lib/react-query/queris';
+import { useCreateAlbum, usegetCurrentUserQuery } from '../../lib/react-query/queris';
 
 export default function AddAlbumModal({isModalOpen,toggleModal}:{isModalOpen:any,toggleModal:any}) {
     const { openNotification,theme } = useMainContext()

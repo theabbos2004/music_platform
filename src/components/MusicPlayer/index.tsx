@@ -120,9 +120,9 @@ const MusicPlayer = () => {
           if(!user){
               throw new Error("please register first")
           }
-          let saveId=user?.saved?.$id
-          if(!user?.saved){
-              const createSaveMusicRes=await createSaveMusic({userId:user?.id})
+          let saveId=user?.saves?.$id
+          if(!user?.saves){
+              const createSaveMusicRes=await createSaveMusic({userId:user?.$id})
               if(createSaveMusicRes.error){
                   throw new Error(createSaveMusicRes.error)
               }
@@ -132,11 +132,11 @@ const MusicPlayer = () => {
           
           let newSaves=[]
           let availableUser=false
-          if(user?.saved?.musics?.length===0){
+          if(user?.saves?.musics?.length===0){
               newSaves.push(music)
           }
           else{
-              user?.saved?.musics?.forEach((save:any)=> {
+              user?.saves?.musics?.forEach((save:any)=> {
                   if(save?.$id!==music?.$id){
                       newSaves.push(save)
                   }

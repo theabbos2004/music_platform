@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useMainContext } from "../../contexts/MainContext";
-import { useCreateSaveMusic, usegetCurrentUserQuery, useSaveMusic, useUpdateUser } from "../../lib/react-query/queris";
+import { useCreateSaveMusic, usegetCurrentUserQuery, useSaveMusic } from "../../lib/react-query/queris";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { appwriteConfig, client } from "../../lib/AppWrite/config";
