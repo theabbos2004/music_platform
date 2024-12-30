@@ -4,7 +4,7 @@ import { appwriteConfig, client } from "../../lib/AppWrite/config";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { useMainContext } from "../../contexts/MainContext";
-import { useCreateSaveMusic, usegetCurrentUserQuery, useSaveMusic, useUpdateUser } from "../../lib/react-query/queris";
+import { usegetCurrentUserQuery, useUpdateUser } from "../../lib/react-query/queris";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { IUser } from "../../types";
 import { useUserContext } from "../../contexts/AuthContext/AuthContext";
