@@ -1,6 +1,6 @@
 import { AppwriteException, ID, Query } from "appwrite"
 import { account, appwriteConfig, avatars, database, storage } from "./config"
-import { ICreateAlbum, IDelAdvertising, IFORMEDITPROFILE, IGetUser, IMusicSave, IMusicUpdate, IMusicViews, INewAcount, INewAdvertising, INewMusic, INewMusicAdvertising, INewUser, INewUserDB, IUserSession } from "../../types"
+import { IActiveAdvertising, ICreateAlbum, IDelAdvertising, IFORMEDITPROFILE, IGetUser, IMusicSave, IMusicUpdate, IMusicViews, INewAcount, INewAdvertising, INewMusic, INewMusicAdvertising, INewUser, INewUserDB, IUserSession } from "../../types"
 
 
 // ============================== GET USER
@@ -327,20 +327,15 @@ export const createAdvertising =async ({creator,title,image_url}:INewAdvertising
     }
 }
 
-export const deleteAdvertising =async ({advertising}:IDelAdvertising):Promise<{data?:any,error?:any}>=>{
+export const deleteAdvertising =async ({advertisingId}:IDelAdvertising):Promise<{data?:any,error?:any}>=>{
     try{
         const delAdvertising=await database.deleteDocument(
             appwriteConfig.databaseId,
             appwriteConfig.musicsAdvertisingCollectionId,
-            advertising.$id
+            advertisingId
         )
         if(!delAdvertising) throw Error
-        const delAdvertisingStorge=await storage.deleteFile(
-            appwriteConfig.musicsAdvertisingStorageId,
-            advertising.image_id_storge
-        )
-        if(!delAdvertisingStorge) throw Error
-        return {data:delAdvertisingStorge}
+        return {data:delAdvertising}
     }
     catch(error){
         if (error instanceof AppwriteException) {
@@ -348,6 +343,28 @@ export const deleteAdvertising =async ({advertising}:IDelAdvertising):Promise<{d
           } else {
               return {error}
           }
+        }
+    }
+    
+    export const activeAdvertising =async ({advertising,show}:IActiveAdvertising):Promise<{data?:any,error?:any}>=>{
+        try{
+            const newMusicAdvertising=await database.updateDocument(
+                appwriteConfig.databaseId,
+                appwriteConfig.musicsAdvertisingCollectionId,
+                advertising?.$id,
+                {
+                    show
+                }
+            )
+            if(!newMusicAdvertising) throw Error
+            return {data:newMusicAdvertising}
+        }
+        catch(error){
+            if (error instanceof AppwriteException) {
+                return {error:error.message}
+              } else {
+                return {error}
+              }
         }
     }
     

@@ -137,7 +137,11 @@ export type INewMusicAdvertising={
   musicList:any[]
 }
 export type IDelAdvertising={
-  advertising:any
+  advertisingId:any
+}
+export type IActiveAdvertising={
+  advertising:any,
+  show:boolean
 }
 // ========================= MUSIC FILTER
 

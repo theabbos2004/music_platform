@@ -3,12 +3,14 @@ import { IActiveSong } from '../../types'
 import { Col, Flex, Row, Skeleton, Space } from 'antd'
 import { useEffect, useState } from 'react';
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { useAddMusicToAdvertising, useDelAdvertising } from '../../lib/react-query/queris';
+import { useActiveAdvertising, useAddMusicToAdvertising, useDelAdvertising, useGetAdvertising } from '../../lib/react-query/queris';
 import { useMainContext } from '../../contexts/MainContext';
 import { CheckCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 export default function CreateSliderComp({ user, song }: { user: any, song: { isPlaying: boolean, activeSong: IActiveSong, currentIndex: number } }) {
   const { mutateAsync: delAdvertising } = useDelAdvertising()
+  const { data: getAdvertising } = useGetAdvertising()
+  const { mutateAsync: activeAdvertising } = useActiveAdvertising()
   const { mutateAsync: addMusicToAdvertising } = useAddMusicToAdvertising()
   const [showMenu, setShowMenu] = useState("advertising")
   const [isModalOpen, setIsModalOpen] = useState<{ title: string, target: boolean }>();
@@ -25,13 +27,28 @@ export default function CreateSliderComp({ user, song }: { user: any, song: { is
     setIsModalOpen({ title, target });
   };
 
-  const deleteAdvertisingFunc = async (advertising: any) => {
+  const deleteAdvertisingFunc = async (advertisingId: any) => {
     try {
-      const delColDocRes = await delAdvertising({ advertising })
+      const delColDocRes = await delAdvertising({ advertisingId })
       if (delColDocRes?.error) {
         throw new Error(delColDocRes.error)
       }
       openNotification({ placement: 'topLeft', description: "music has been removed", icon: <CheckCircleOutlined style={{ color: "var(--color-green)" }} /> })
+    }
+    catch (error) {
+      openNotification({ placement: 'topLeft', description: `${error}`, icon: <CheckCircleOutlined style={{ color: "var(--color-green)" }} /> })
+    }
+  }
+  const activeAdvertisingFunc = async (advertising: any) => {
+    try {
+        getAdvertising?.data?.documents?.map((oldAdvertising:{$id?:string,show:null|boolean})=>{
+          if(oldAdvertising?.$id === advertising?.$id){
+            activeAdvertising({ advertising ,show:true})
+          }
+          else if(oldAdvertising?.show){
+            activeAdvertising({ advertising:oldAdvertising, show:false})
+          }
+        })
     }
     catch (error) {
       openNotification({ placement: 'topLeft', description: `${error}`, icon: <CheckCircleOutlined style={{ color: "var(--color-green)" }} /> })
@@ -78,6 +95,7 @@ export default function CreateSliderComp({ user, song }: { user: any, song: { is
                   ? (user?.advertisings?.map((advertising: any, advertisingIndex: number) => (
                     <MusicCard key={advertisingIndex} admin={true} music={advertising} musicIndex={advertisingIndex} parentIdx={23}
                       deleteItemFunc={deleteAdvertisingFunc}
+                      activeAdvertisingFunc={activeAdvertisingFunc}
                       event={{
                         onClick: () => {
                           setShowMenu("advertisings/musics")
