@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query"
-import { addMusicToAdvertising, addMusicToAlbum, createAccount, createAdvertising, createAlbum, createMusic, createSaveMusic, createUserAccount, createViewsMusic, deleteAdvertising, deleteCollectionFile, getAdvertising, getAlbums, getCurrentAccount, getCurrentUser,  getFilterMusic,   getMusics,   getSaveMusic,   getUser,   saveMusic,   signInAccount, signOutAccount, updateUser, updateMusic, viewedMusic} from "../AppWrite/api"
+import { addMusicToAdvertising, addMusicToAlbum, createAccount, createAdvertising, createAlbum, createMusic, createSaveMusic, createUserAccount, createViewsMusic, deleteAdvertising, deleteCollectionFile, getAdvertising, getAlbums, getCurrentAccount, getCurrentUser,  getFilterMusic,   getMusics,   getSaveMusic,   getUser,   saveMusic,   signInAccount, signOutAccount, updateUser, updateMusic, viewedMusic, activeAdvertising} from "../AppWrite/api"
 
-import { ICreateAlbum, IDelAdvertising, IFORMEDITPROFILE, IGetUser, IMusicSave, IMusicUpdate, IMusicViews, INewAcount, INewAdvertising, INewMusicAdvertising, INewUser, IUserSession } from "../../types"
+import { IActiveAdvertising, ICreateAlbum, IDelAdvertising, IFORMEDITPROFILE, IGetUser, IMusicSave, IMusicUpdate, IMusicViews, INewAcount, INewAdvertising, INewMusicAdvertising, INewUser, IUserSession } from "../../types"
 import { QUERY_KEYS } from "./queryKeys"
 
 // ==================================== AUTH QUERIES
@@ -129,7 +129,12 @@ export const useUpdateMusic=()=>{
     }
     export const useDelAdvertising=()=>{
         return useMutation({
-        mutationFn:({advertising}:IDelAdvertising)=>deleteAdvertising({advertising})
+        mutationFn:({advertisingId}:IDelAdvertising)=>deleteAdvertising({advertisingId})
+    })
+    }
+    export const useActiveAdvertising=()=>{
+        return useMutation({
+        mutationFn:({advertising,show}:IActiveAdvertising)=>activeAdvertising({advertising,show})
     })
     }
 

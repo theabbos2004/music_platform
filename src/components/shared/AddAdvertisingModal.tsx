@@ -3,7 +3,7 @@ import { ICreateAlbum } from '../../types';
 import { useMainContext } from '../../contexts/MainContext';
 import { CheckCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { useCreateAdvertising, usegetCurrentAccountQuery } from '../../lib/react-query/queris';
+import { useCreateAdvertising, usegetCurrentUserQuery } from '../../lib/react-query/queris';
 
 export default function AddAdvertisingModal({isModalOpen,toggleModal}:{isModalOpen:any,toggleModal:any}) {
     const { openNotification,theme } = useMainContext()
@@ -26,7 +26,7 @@ export default function AddAdvertisingModal({isModalOpen,toggleModal}:{isModalOp
           backdropFilter: 'blur(10px)',
         },
       };
-      const {data:currentUser}=usegetCurrentAccountQuery()
+      const {data:currentUser}=usegetCurrentUserQuery()
 
       const onFinish: FormProps<ICreateAlbum>['onFinish'] = async (values) => {
         setIsLoading(true)

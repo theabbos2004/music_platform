@@ -14,12 +14,11 @@ const Carusel: React.FC = () => {
   const {data:getAdvertising}=useGetAdvertising()
   const { isPlaying , activeSong , currentIndex} = useSelector((state:RootState) => state?.player);
   const [musicEvent,setMusicEvent]=useState<IMusicEvent>()
-  const [advertising,setAdvertising]=useState<any>()
+  const [advertising,setAdvertising]=useState<any>(null)
   const caruselRef=useRef<any>()
   const dispatch = useDispatch();
   useEffect(()=>{
-    let newAdvertising=getAdvertising?.data?.documents[Math.floor(Math.random()*getAdvertising?.data?.documents.length)]
-    setAdvertising(newAdvertising?.musics)
+    getAdvertising?.data?.documents.filter((advertising:any)=>advertising?.show && setAdvertising(advertising?.musics))
   },[getAdvertising?.data])
   return (
   <div className={`p-4 px-8 sm:px-4 relative w-full`}> 

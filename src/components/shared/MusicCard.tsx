@@ -4,11 +4,13 @@ import { BsPauseCircleFill, BsPlayCircleFill } from 'react-icons/bs';
 import { RiDeleteBinFill, RiHeart3Fill, RiHeart3Line ,RiBookmarkLine, RiBookmarkFill } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { playPause, setActiveSong } from '../../redux/features/playerSlice';
+import { useLocation } from 'react-router-dom';
 
-export default function MusicCard({ user,admin, musics,music,musicIndex, parentIdx ,song, deleteItemFunc,event,likeMusicFunc,saveMusicFunc,viewMusicFunc,isMusicLoading}: {user?:any,admin?:boolean,musics?:any, music?: any,musicIndex:number, event?: {onClick:any} ,parentIdx:number,song?:{activeSong:any,currentIndex:any,isPlaying:any},deleteItemFunc?:any,likeMusicFunc?:any,saveMusicFunc?:any,viewMusicFunc?:any,isMusicLoading?:any}) {
+export default function MusicCard({ user,admin, musics,music,musicIndex, parentIdx ,song, deleteItemFunc,event,likeMusicFunc,saveMusicFunc,viewMusicFunc,isMusicLoading,activeAdvertisingFunc}: {user?:any,admin?:boolean,musics?:any, music?: any,musicIndex:number, event?: {onClick:any} ,parentIdx:number,song?:{activeSong:any,currentIndex:any,isPlaying:any},deleteItemFunc?:any,likeMusicFunc?:any,saveMusicFunc?:any,viewMusicFunc?:any,isMusicLoading?:any,activeAdvertisingFunc?:any}) {
     const [musicEvent, setMusicEvent] = useState<{ id?: string; parentIdx?: number, hover?: boolean }>({})
 
     const musicRef=useRef<any>()
+    const {pathname}=useLocation()
     
     const handleMouseEnter = (id: string, parentIdx: number) => {
         setMusicEvent(() => ({
@@ -66,6 +68,15 @@ export default function MusicCard({ user,admin, musics,music,musicIndex, parentI
                             e.stopPropagation()
                             if(!isMusicLoading){
                                 deleteItemFunc(music.$id)
+                            }
+                        }}
+                    />
+                    <div
+                        className={`size-5 absolute top-2 left-2 rounded-full cursor-pointer ${music?.show ? "bg-green-700" : "bg-red-700"} ${pathname.includes("slider") && music["show"] !== undefined && admin && musicEvent.id === music.$id && musicEvent.parentIdx === parentIdx && musicEvent.hover ? "block" : "hidden"}`}
+                        onClick={(e:any) => {
+                            e.stopPropagation()
+                            if(!isMusicLoading){
+                                activeAdvertisingFunc(music)
                             }
                         }}
                     />
